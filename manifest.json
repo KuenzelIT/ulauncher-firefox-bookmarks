@@ -1,0 +1,48 @@
+{
+    "manifest_version": "2",
+    "api_version": "1",
+    "name": "Firefox History",
+    "description": "Search into Firefox history",
+    "developer_name": "Riccardo Massidda",
+    "icon": "images/icon.png",
+    "options": {
+      "query_debounce": 0.1
+    },
+    "preferences": [
+      {
+        "id": "kw",
+        "type": "keyword",
+        "name": "Firefox History",
+        "default_value": "fh"
+      },
+      {
+        "id": "aggregate",
+        "type": "select",
+        "name": "Aggregate results by hostname",
+        "default_value": "false",
+        "options":[
+          {"value":"true","text":"Yes"},
+          {"value":"false","text":"No"}
+        ]
+      },
+      {
+        "id": "order",
+        "type": "select",
+        "name": "Results order",
+        "default_value": "frecency",
+        "options":[
+          {"value":"frecency","text":"Firefox Frecency"},
+          {"value":"visit","text":"Visit Count"},
+          {"value":"recent","text":"Last Visit"}
+          ]
+      },  
+      {
+        "id": "limit",
+        "type": "input",
+        "name": "Results number",
+        "default_value": "5"
+      }
+
+    ]
+  }
+  
