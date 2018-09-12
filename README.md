@@ -1,1 +1,2 @@
-# ulauncher-firefox-history
+# Ulauncher Firefox History
+![screenshot](screenshot.png)
