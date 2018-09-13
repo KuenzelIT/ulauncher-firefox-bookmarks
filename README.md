@@ -1,6 +1,6 @@
 # Ulauncher Firefox History
 ![screenshot](screenshot.png)
-### [Ulauncher](https://ulauncher.io) extension to quickly access already visited websites.
+### [Ulauncher](https://ulauncher.io) extension for quickly accessing already visited websites.
 
 ## Use
 > fh 
