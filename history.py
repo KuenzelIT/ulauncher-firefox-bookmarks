@@ -59,7 +59,7 @@ class FirefoxHistory():
                 query += 'sum(visit_count)'
             #   Last Visit
             elif self.order == 'recent':
-                query += 'last_visit_date'
+                query += 'max(last_visit_date)'
             #   Not sorted
             else:
                 query += 'hostname(url)'
