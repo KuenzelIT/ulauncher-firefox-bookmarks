@@ -46,9 +46,14 @@ class FirefoxHistory():
             query = 'SELECT hostname(url)'
         else:
             query = 'SELECT DISTINCT url'
+        query += ',title FROM moz_places WHERE'
+        #   Search terms
+        terms = query_str.split(' ')
+        for term in terms:
+            query += ' ((url LIKE "%%%s%%") OR (title LIKE "%%%s%%")) AND' % (term,term)    
+        #   Delete last AND
+        query = query[:-4]
 
-        query += ',title FROM moz_places WHERE (url LIKE "%%%s%%") OR (title LIKE "%%%s%%")' % (query_str,query_str)    
-        
         if self.aggregate == "true":
             query += ' GROUP BY hostname(url) ORDER BY '
             #   Firefox Frecency
