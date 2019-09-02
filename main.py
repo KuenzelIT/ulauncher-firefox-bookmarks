@@ -60,7 +60,8 @@ class KeywordQueryEventListener(EventListener):
         results = extension.fh.search(query)
         for link in results:
             #   Encode 
-            hostname = link[0].encode("utf-8")
+            # hostname = link[0].encode("utf-8")
+            hostname = link[0]
             #   Split Domain Levels
             dm = hostname.split('.')
             #   Remove WWW
