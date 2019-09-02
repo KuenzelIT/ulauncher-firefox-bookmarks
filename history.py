@@ -1,7 +1,7 @@
 import sqlite3
 import tempfile
 import shutil
-import ConfigParser
+import configparser
 import os
 
 class FirefoxHistory():
@@ -30,7 +30,7 @@ class FirefoxHistory():
         #   Firefox profiles configuration file path
         conf_path = os.path.join(firefox_path,'profiles.ini') 
         #   Profile config parse
-        profile = ConfigParser.RawConfigParser()
+        profile = configparser.RawConfigParser()
         profile.read(conf_path)
         prof_path = profile.get("Profile0", "Path")
         #   Sqlite db directory path
