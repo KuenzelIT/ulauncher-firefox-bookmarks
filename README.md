@@ -1,4 +1,7 @@
-# Ulauncher Firefox History
+# Ulauncher Firefox Bookmarks
+
+Code taken mostly from ulauncher-firefox-history and changed to use bookmarks instead. README and code still needs cleanup.
+
 ![screenshot](screenshot.png)
 ### [Ulauncher](https://ulauncher.io) extension for quickly accessing already visited websites.
 
