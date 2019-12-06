@@ -6,14 +6,12 @@ import os
 
 class FirefoxHistory():
     def __init__(self):
-        #   Aggregate results
-        self.aggregate = None
-        #   Results order
-        self.order = None
         #   Results number
         self.limit = None
+
         #   Set history location
         history_location = self.searchPlaces()
+
         #   Temporary  file 
         #   Using FF63 the DB was locked for exclusive use of FF
         #   TODO:   Regular updates of the temporary file 
@@ -46,22 +44,7 @@ class FirefoxHistory():
         else:
             return 'Unknown'
 
-    def search(self,query_str):
-        #   Aggregate URLs by hostname
-        #if self.aggregate == "true":
-        #    query = 'SELECT hostname(url)'
-        #else:
-        #    query = 'SELECT DISTINCT url'
-        #query += ',title FROM moz_places WHERE'
-        #   Search terms
-        #terms = query_str.split(' ')
-        #for term in terms:
-        #    query += ' ((url LIKE "%%%s%%") OR (title LIKE "%%%s%%")) AND' % (term,term)    
-            #query += ' (title LIKE "%%%s%%") AND' % (term)    
-        #   Delete last AND
-        #query = query[:-4]
-
-        term = query_str
+    def search(self, term):
         query = 'SELECT A.title, url FROM moz_bookmarks AS A'
         query += ' JOIN moz_places AS B ON(A.fk = B.id)'
 
@@ -72,38 +55,6 @@ class FirefoxHistory():
 
 
         query += ' ORDER BY instr(LOWER(A.title), LOWER("%s")) ASC LIMIT %d' % (term, self.limit)
-
-        print(query)
-       # if self.aggregate == "true":
-       #     query += ' GROUP BY hostname(url) ORDER BY '
-       #     #   Firefox Frecency
-       #     if self.order == 'frecency':
-       #         query += 'sum(frecency)'
-       #     #   Visit Count
-       #     elif self.order == 'visit':
-       #         query += 'sum(visit_count)'
-       #     #   Last Visit
-       #     elif self.order == 'recent':
-       #         query += 'max(last_visit_date)'
-       #     #   Not sorted
-       #     else:
-       #         query += 'hostname(url)'
-       # else:
-       #     query += ' ORDER BY '
-       #     #   Firefox Frecency
-       #     if self.order == 'frecency':
-       #         query += 'frecency'
-       #     #   Visit Count
-       #     elif self.order == 'visit':
-       #         query += 'visit_count'
-       #     #   Last Visit
-       #     elif self.order == 'recent':
-       #         query += 'last_visit_date'
-       #     #   Not sorted
-       #     else:
-       #         query += 'url'
-
-        #query += ' DESC LIMIT %d' % self.limit
 
         #   Query execution
         cursor = self.conn.cursor()

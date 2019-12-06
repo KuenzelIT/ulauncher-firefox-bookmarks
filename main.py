@@ -20,9 +20,9 @@ class FirefoxHistoryExtension(Extension):
 class PreferencesEventListener(EventListener):
     def on_event(self,event,extension):
         #   Aggregate Results
-        extension.fh.aggregate = event.preferences['aggregate']
+        #extension.fh.aggregate = event.preferences['aggregate']
         #   Results Order
-        extension.fh.order = event.preferences['order']
+        #extension.fh.order = event.preferences['order']
         #   Results Number
         try:
             n = int(event.preferences['limit'])
@@ -33,17 +33,17 @@ class PreferencesEventListener(EventListener):
 class PreferencesUpdateEventListener(EventListener):
     def on_event(self,event,extension):
         #   Results Order
-        if event.id == 'order':
-            extension.fh.order = event.new_value
+        #if event.id == 'order':
+        #    extension.fh.order = event.new_value
         #   Results Number
-        elif event.id == 'limit':
+        if event.id == 'limit':
             try:
                 n = int(event.new_value)
                 extension.fh.limit = n
             except:
                 pass
-        elif event.id == 'aggregate':
-            extension.fh.aggregate = event.new_value
+        #elif event.id == 'aggregate':
+        #    extension.fh.aggregate = event.new_value
 
 class SystemExitEventListener(EventListener):
     def on_event(self,event,extension):
