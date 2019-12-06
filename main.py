@@ -71,19 +71,21 @@ class KeywordQueryEventListener(EventListener):
             #   Join remaining domains and capitalize
             name = ' '.join(dm[i:len(dm)-1]).title()
             #   TODO: favicon of the website
-            if extension.fh.aggregate == "true":
-                items.append(ExtensionResultItem(icon='images/icon.png',
-                                                name=name,
-                                                on_enter=OpenUrlAction('https://'+hostname)))
-            else:
-                if link[1] == None:
-                    title = hostname
-                else:
-                    title = link[1]
-                items.append(ExtensionResultItem(icon='images/icon.png',
-                                                name=title,
-                                                description=hostname,
-                                                on_enter=OpenUrlAction(hostname)))
+            #if extension.fh.aggregate == "true":
+            #    items.append(ExtensionResultItem(icon='images/icon.png',
+                                            #    name=name,
+                                            #    on_enter=OpenUrlAction('https://'+hostname)))
+            #else:
+            title = link[0]
+            url = link[1]
+                #if link[1] == None:
+                #    title = hostname
+                #else:
+                #    title = link[1]
+            items.append(ExtensionResultItem(icon='images/icon.png',
+                                            name=title,
+                                            description=url,
+                                            on_enter=OpenUrlAction(url)))
 
         return RenderResultListAction(items)
 

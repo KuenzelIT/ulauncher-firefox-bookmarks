@@ -48,48 +48,62 @@ class FirefoxHistory():
 
     def search(self,query_str):
         #   Aggregate URLs by hostname
-        if self.aggregate == "true":
-            query = 'SELECT hostname(url)'
-        else:
-            query = 'SELECT DISTINCT url'
-        query += ',title FROM moz_places WHERE'
+        #if self.aggregate == "true":
+        #    query = 'SELECT hostname(url)'
+        #else:
+        #    query = 'SELECT DISTINCT url'
+        #query += ',title FROM moz_places WHERE'
         #   Search terms
-        terms = query_str.split(' ')
-        for term in terms:
-            query += ' ((url LIKE "%%%s%%") OR (title LIKE "%%%s%%")) AND' % (term,term)    
+        #terms = query_str.split(' ')
+        #for term in terms:
+        #    query += ' ((url LIKE "%%%s%%") OR (title LIKE "%%%s%%")) AND' % (term,term)    
+            #query += ' (title LIKE "%%%s%%") AND' % (term)    
         #   Delete last AND
-        query = query[:-4]
+        #query = query[:-4]
 
-        if self.aggregate == "true":
-            query += ' GROUP BY hostname(url) ORDER BY '
-            #   Firefox Frecency
-            if self.order == 'frecency':
-                query += 'sum(frecency)'
-            #   Visit Count
-            elif self.order == 'visit':
-                query += 'sum(visit_count)'
-            #   Last Visit
-            elif self.order == 'recent':
-                query += 'max(last_visit_date)'
-            #   Not sorted
-            else:
-                query += 'hostname(url)'
-        else:
-            query += ' ORDER BY '
-            #   Firefox Frecency
-            if self.order == 'frecency':
-                query += 'frecency'
-            #   Visit Count
-            elif self.order == 'visit':
-                query += 'visit_count'
-            #   Last Visit
-            elif self.order == 'recent':
-                query += 'last_visit_date'
-            #   Not sorted
-            else:
-                query += 'url'
+        term = query_str
+        query = 'SELECT A.title, url FROM moz_bookmarks AS A'
+        query += ' JOIN moz_places AS B ON(A.fk = B.id)'
 
-        query += ' DESC LIMIT %d' % self.limit
+        #terms = query_str.split(' ')
+
+        #for term in terms:
+        query += ' WHERE A.title LIKE "%%%s%%"' % (term)    
+
+
+        query += ' ORDER BY instr(LOWER(A.title), LOWER("%s")) ASC LIMIT %d' % (term, self.limit)
+
+        print(query)
+       # if self.aggregate == "true":
+       #     query += ' GROUP BY hostname(url) ORDER BY '
+       #     #   Firefox Frecency
+       #     if self.order == 'frecency':
+       #         query += 'sum(frecency)'
+       #     #   Visit Count
+       #     elif self.order == 'visit':
+       #         query += 'sum(visit_count)'
+       #     #   Last Visit
+       #     elif self.order == 'recent':
+       #         query += 'max(last_visit_date)'
+       #     #   Not sorted
+       #     else:
+       #         query += 'hostname(url)'
+       # else:
+       #     query += ' ORDER BY '
+       #     #   Firefox Frecency
+       #     if self.order == 'frecency':
+       #         query += 'frecency'
+       #     #   Visit Count
+       #     elif self.order == 'visit':
+       #         query += 'visit_count'
+       #     #   Last Visit
+       #     elif self.order == 'recent':
+       #         query += 'last_visit_date'
+       #     #   Not sorted
+       #     else:
+       #         query += 'url'
+
+        #query += ' DESC LIMIT %d' % self.limit
 
         #   Query execution
         cursor = self.conn.cursor()
