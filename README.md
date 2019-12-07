@@ -2,7 +2,7 @@
 
 Code taken mostly from [ulauncher-firefox-history](https://github.com/rmassidda/ulauncher-firefox-history) and changed to use bookmarks instead. README and code still needs cleanup.
 
-![screenshot](screenshot.png)
+![screenshot](images/screenshot.png)
 ### [Ulauncher](https://ulauncher.io) extension for quickly accessing already visited websites.
 
 ## Use
