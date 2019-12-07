@@ -17,4 +17,4 @@ The **number of results** can be changed in the extension's settings.
 Copy and paste this repository link inside __Add extension__ in Ulauncher's settings panel.
 
 ## Thanks to
-Thanks go to Riccardo Massidda since his extension [ulauncher-firefox-history](https://github.com/rmassidda/ulauncher-firefox-history) was the base for this extension and was adjusted to be used with bookmarks.
+Thanks go to Riccardo Massidda since his extension [ulauncher-firefox-history](https://github.com/rmassidda/ulauncher-firefox-history) was the base for this one.
