@@ -12,9 +12,9 @@ class FirefoxHistory():
         #   Set history location
         history_location = self.searchPlaces()
 
-        #   Temporary  file 
+        #   Temporary  file
         #   Using FF63 the DB was locked for exclusive use of FF
-        #   TODO:   Regular updates of the temporary file 
+        #   TODO:   Regular updates of the temporary file
         temporary_history_location = tempfile.mktemp()
         shutil.copyfile(history_location, temporary_history_location)
         #   Open Firefox history database
@@ -26,7 +26,7 @@ class FirefoxHistory():
         #   Firefox folder path
         firefox_path = os.path.join(os.environ['HOME'], '.mozilla/firefox/')
         #   Firefox profiles configuration file path
-        conf_path = os.path.join(firefox_path,'profiles.ini') 
+        conf_path = os.path.join(firefox_path,'profiles.ini')
         #   Profile config parse
         profile = configparser.RawConfigParser()
         profile.read(conf_path)
@@ -47,14 +47,14 @@ class FirefoxHistory():
     def search(self, term):
         query = 'SELECT A.title, url FROM moz_bookmarks AS A'
         query += ' JOIN moz_places AS B ON(A.fk = B.id)'
+        query += ' WHERE A.title LIKE "%%%s%%"' % term
 
-        #terms = query_str.split(' ')
+        if term == "":
+            query += ' ORDER BY A.lastModified DESC'
+        else:
+            query += ' ORDER BY instr(LOWER(A.title), LOWER("%s")) ASC' % term
+        query += ' LIMIT %d' % self.limit
 
-        #for term in terms:
-        query += ' WHERE A.title LIKE "%%%s%%"' % (term)    
-
-
-        query += ' ORDER BY instr(LOWER(A.title), LOWER("%s")) ASC LIMIT %d' % (term, self.limit)
 
         #   Query execution
         cursor = self.conn.cursor()
