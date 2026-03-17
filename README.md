@@ -1,7 +1,7 @@
 # Ulauncher Firefox Bookmarks
 
 ![screenshot](images/screenshot.png)
-### [Ulauncher](https://ulauncher.io) extension for quickly accessing bookmarked pages in Firefox.
+### [Ulauncher](https://ulauncher.io) extension for quickly accessing bookmarked pages in Firefox with favicons support.
 
 ## Use
 > f query

@@ -3,7 +3,7 @@
     "name": "Firefox Bookmarks",
     "description": "Search your Firefox bookmarks",
     "developer_name": "Denis Gerber",
-    "icon": "images/icon.png",
+    "icon": "images/icon.svg",
     "options": {
       "query_debounce": 0.1
     },

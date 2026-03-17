@@ -10,17 +10,30 @@ class FirefoxHistory():
         self.limit = None
 
         #   Set history location
-        history_location = self.searchPlaces(firefox_path)
+        self.history_location = self.searchPlaces(firefox_path)
+        self.last_mtime = 0
 
         #   Temporary  file
         #   Using FF63 the DB was locked for exclusive use of FF
-        #   TODO:   Regular updates of the temporary file
-        temporary_history_location = tempfile.mktemp()
-        shutil.copyfile(history_location, temporary_history_location)
-        #   Open Firefox history database
-        self.conn = sqlite3.connect(temporary_history_location)
-        #   External functions
-        self.conn.create_function('hostname',1,self.__getHostname)
+        self.temporary_history_location = tempfile.mktemp()
+        self.conn = None
+        self.update_db_if_needed()
+
+    def update_db_if_needed(self):
+        try:
+            current_mtime = os.path.getmtime(self.history_location)
+        except OSError:
+            return
+
+        if current_mtime > self.last_mtime:
+            if self.conn:
+                self.conn.close()
+            shutil.copyfile(self.history_location, self.temporary_history_location)
+            #   Open Firefox history database
+            self.conn = sqlite3.connect(self.temporary_history_location, check_same_thread=False)
+            #   External functions
+            self.conn.create_function('hostname',1,self.__getHostname)
+            self.last_mtime = current_mtime
 
     def searchPlaces(self, firefox_path: str):
         #   Firefox folder path
@@ -47,6 +60,8 @@ class FirefoxHistory():
             return 'Unknown'
 
     def search(self, term):
+        self.update_db_if_needed()
+
         query = 'SELECT A.title, url FROM moz_bookmarks AS A'
         query += ' JOIN moz_places AS B ON(A.fk = B.id)'
         query += ' WHERE A.title LIKE "%%%s%%"' % term
@@ -63,6 +78,25 @@ class FirefoxHistory():
         cursor.execute(query)
         rows = cursor.fetchall()
         return rows
+
+    def get_all_domains(self):
+        self.update_db_if_needed()
+
+        query = 'SELECT url FROM moz_bookmarks AS A'
+        query += ' JOIN moz_places AS B ON(A.fk = B.id)'
+        cursor = self.conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        
+        from urllib.parse import urlparse
+        domains = set()
+        for row in rows:
+            url = row[0]
+            if url:
+                domain = urlparse(url).netloc
+                if domain:
+                    domains.add(domain)
+        return list(domains)
 
     def close(self):
         self.conn.close()
